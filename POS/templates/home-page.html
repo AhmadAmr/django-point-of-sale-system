@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<!--Main layout-->
+<main>
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-md-8 mb-4">
+        <!--Navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
+
+          <!-- Navbar brand -->
+          <span class="navbar-brand">Categories:</span>
+
+          <!-- Collapse button -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+            aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Collapsible content -->
+          <div class="collapse navbar-collapse" id="basicExampleNav">
+
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+
+              <li class="nav-item active">
+                <a class="nav-link" href="#">All
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              {%for cat in category_list %}
+              <li class="nav-item">
+                <a class="nav-link" href="#">{{cat.Name}}</a>
+              </li>
+              {%endfor%}
+            </ul>
+            <!-- Links -->
+
+            <form class="form-inline">
+              <div class="md-form my-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+              </div>
+            </form>
+          </div>
+          <!-- Collapsible content -->
+
+        </nav>
+        <!--/.Navbar-->
+
+        <!--Section: Products v.3-->
+        <section class="text-center mb-4">
+
+          <!--Grid row-->
+          <div class="row wow fadeIn">
+            {%for item in item_list%}
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4">
+
+              <!--Card-->
+              <div class="card">
+
+                <!--Card image-->
+                <div class="view overlay">
+                  <img src="{{item.Image.url}}"
+                    class="card-img-top" alt="" style="height: 200px;">
+                  <a>
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+                <!--Card image-->
+
+                <!--Card content-->
+                <div class="card-body text-center">
+                  <!--Category & Title-->
+                  {%csrf_token%}
+                  <input type="hidden" id="itemId" name="itemId" value="{{item.id}}">
+                  <a href="" class="grey-text">
+                    <h5>{{item.Category}}</h5>
+                  </a>
+                  <h5>
+                    <strong>
+                      <p id='itemname' class="dark-grey-text">{{item.Name}}
+                        <span class="badge badge-pill danger-color">NEW</span>
+                      </p>
+                    </strong>
+                  </h5>
+
+                  <h4 class="font-weight-bold blue-text">
+                    <strong>{{item.Price}}$</strong>
+                  </h4>
+
+                  <input type="submit" class="like btn btn-primary" data-id="{{ item.id }}" value="ADD">
+
+                </div>
+                <!--Card content-->
+
+              </div>
+              <!--Card-->
+
+            </div>
+            {%endfor%}
+          </div>
+        </section>
+
+
+        <!--Section: Products v.3-->
+
+        <!--Pagination-->
+        <nav class="d-flex justify-content-center wow fadeIn">
+          <ul class="pagination pg-blue">
+
+            <!--Arrow left-->
+            <li class="page-item disabled">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+
+            <li class="page-item active">
+              <a class="page-link" href="#">1
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">5</a>
+            </li>
+
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!--Pagination-->
+
+      </div>
+      <div class="col-md-4 mb-4">
+
+        <div class="sticky">
+          <div id='results'>
+            {% block results %}
+          <!-- Heading -->
+          <h4 class="d-flex justify-content-between align-items-center mb-3 pt-4 " style="margin-top: 10px;">
+            <span class="text-muted">Your cart</span>
+            <span class="badge badge-secondary badge-pill">{{order_list.items.all.count}}</span>
+          </h4>
+
+          <!-- Cart -->
+          
+          <ul class="list-group mb-3 z-depth-1 mt-3">
+            {%if order_list.items.all.count > 0 %}
+              {%for order in order_list.items.all %}
+              
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+                
+                <div class="col">
+                  <h6 id="item_name" class="my-0">{{order.item.Name}}</h6>
+                  
+                </div>
+                <div class="col"> 
+                  <a id="{{order.item.id}}" onclick="Additem(id)" >
+                    <i class="fas fa-plus-circle"></i>
+                  </a>
+                  <small id="item_quantity" class="text-muted">{{order.quantity}}</small>
+                  <a>
+                    <i class="fas fa-minus-circle"></i>
+                  </a>
+                </div>
+                <div class="col">
+                <span id="item_price" class="text-muted">${{order.item.Price}}</span>
+              </div>
+             
+              </li>
+              {%endfor%}
+
+            
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Promo code</h6>
+                <small>EXAMPLECODE</small>
+              </div>
+              <span class="text-success">-$5</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>${{order_list.total_price}}</strong>
+            </li>
+              <a href="{%url 'chekout' %}" class="btn btn-success">Process checkout</a>
+          </ul>
+          {%else%}
+          <p>your cart is empety</p>
+          {%endif%}
+          {%endblock%}
+        </div>
+          <!-- Cart -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+<!--Main layout-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<script>
+
+
+
+  $('.like').click(function () {
+    var catid;
+    catid = $(this).attr("data-id");
+    
+    $.ajax(
+      {
+        type: "POST",
+        url: "/POS/add_to_cart/" + catid,
+        data: {
+          post_id: catid,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (data) {
+          if (data.status == 'fail') {
+            window.location.href = '/accounts/login';
+          }
+          if (data.status == 'success') {
+            for (var i = 0; i < 1000; i++)
+              console.log('ddd');
+            Listitem();
+          }
+        }
+
+      })
+  })
+
+  function Listitem() {
+    var delay = 100;
+    $.ajax({
+      type: 'GET',
+      url: '/POS/cart_list',
+      success: function (data) {
+        setTimeout(function () {
+          delaySuccess(data);
+        }, delay);
+      }
+    });
+  }
+  function delaySuccess(data) {
+    $('#results').html(data);
+  }
+  function Additem(id) {
+    $.ajax(
+      {
+        type: "POST",
+        url: "/POS/add_to_cart/" + id,
+        data: {
+          post_id: id,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (data) {
+          if (data.status == 'fail') {
+            window.location.href = '/accounts/login';
+          }
+          if (data.status == 'success') {
+            for (var i = 0; i < 1000; i++)
+              console.log('ddd');
+            Listitem();
+          }
+        }
+
+      })
+      
+
+} // end function changeImage(id)
+</script>
+
+
+{% endblock %}
