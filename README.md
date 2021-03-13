@@ -1,0 +1,1 @@
+# django-point-of-sale-system
