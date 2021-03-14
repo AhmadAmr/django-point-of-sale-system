@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 import json
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.template import loader
@@ -52,20 +53,56 @@ def add_to_cart(request,pk):
         if order_qs.exists():
             order=order_qs[0]
             if order.items.filter(item__pk=item.pk).exists() :
-                print('cooo')
+                
                 order_item.quantity +=1
                 order_item.save()
             else:
-                print('blaaa')
+                
                 order.items.add(order_item)
         else:
-            print('foo')
+            
             date=timezone.now()
             order=Order.objects.create(order_date=date,user=request.user)
             order.items.add(order_item)
+        messages.success(request, "Your order was successful!")
         return HttpResponse('{"status":"success", "msg":"hello"}', content_type='application/json')
     else:
         return HttpResponse('{"status":"fail", "msg":"404"}', content_type='application/json')
+
+def remove_from_cart(request,pk,single_item=-1):
+    item = get_object_or_404(Item,pk=pk)
+    order_item,created=ItemOrder.objects.get_or_create(item=item,is_ordered=False,user=request.user)
+    order_qs=Order.objects.filter(is_ordered=False,user=request.user)
+
+    if order_qs.exists() :
+        order=order_qs[0]
+        if order.items.filter(item__pk=item.pk).exists() :
+            if single_item != -1 :
+                if order_item.quantity > 1 :
+                    order_item.quantity -= 1
+                    order_item.save()
+                    return HttpResponse('{"status":"success", "msg":"hello"}', content_type='application/json')
+                else:
+                    order.items.remove(order_item)
+                    return HttpResponse('{"status":"success", "msg":"hello"}', content_type='application/json')
+            else:
+                order.items.remove(order_item)
+                order_item.delete()
+                return HttpResponse('{"status":"success", "msg":"hello"}', content_type='application/json')
+        else: 
+            return HttpResponse('{"status":"fail", "msg":"404"}', content_type='application/json')
+    else:
+        return HttpResponse('{"status":"fail", "msg":"404"}', content_type='application/json')
+
+
+        
+
+
+
+
+
+
+
 
 def cart_list(request):
     order=Order.objects.get(user=request.user,is_ordered=False)
