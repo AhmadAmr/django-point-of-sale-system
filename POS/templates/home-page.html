@@ -85,7 +85,7 @@
                   <h5>
                     <strong>
                       <p id='itemname' class="dark-grey-text">{{item.Name}}
-                        <span class="badge badge-pill danger-color">NEW</span>
+                       
                       </p>
                     </strong>
                   </h5>
@@ -179,7 +179,7 @@
                     <i class="fas fa-plus-circle"></i>
                   </a>
                   <small id="item_quantity" class="text-muted">{{order.quantity}}</small>
-                  <a>
+                  <a id="{{order.item.id}}" onclick="remove_single_item(id)">
                     <i class="fas fa-minus-circle"></i>
                   </a>
                 </div>
@@ -288,7 +288,54 @@
       })
       
 
-} // end function changeImage(id)
+} // end function Additem(id)
+
+function remove_single_item(id)
+{
+  $.ajax(
+      {
+        type: "POST",
+        url: "/POS/remove_from_cart/" + id+"/5",
+        data: {
+          post_id: id,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (data) {
+          if (data.status == 'fail') {
+            window.location.href = '/accounts/login';
+          }
+          if (data.status == 'success') {
+            for (var i = 0; i < 1000; i++)
+              console.log('ddd');
+            Listitem();
+          }
+        }
+
+      })
+}
+function removeitem(id)
+{
+  $.ajax(
+      {
+        type: "POST",
+        url: "/POS/remove_from_cart/" + id,
+        data: {
+          post_id: id,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (data) {
+          if (data.status == 'fail') {
+            window.location.href = '/accounts/login';
+          }
+          if (data.status == 'success') {
+            for (var i = 0; i < 1000; i++)
+              console.log('ddd');
+            Listitem();
+          }
+        }
+
+      })
+}
 </script>
 
 
