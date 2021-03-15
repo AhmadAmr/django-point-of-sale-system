@@ -66,8 +66,7 @@
 
                 <!--Card image-->
                 <div class="view overlay">
-                  <img src="{{item.Image.url}}"
-                    class="card-img-top" alt="" style="height: 200px;">
+                  <img src="{{item.Image.url}}" class="card-img-top" alt="" style="height: 200px;">
                   <a>
                     <div class="mask rgba-white-slight"></div>
                   </a>
@@ -85,7 +84,7 @@
                   <h5>
                     <strong>
                       <p id='itemname' class="dark-grey-text">{{item.Name}}
-                       
+
                       </p>
                     </strong>
                   </h5>
@@ -156,59 +155,71 @@
         <div class="sticky">
           <div id='results'>
             {% block results %}
-          <!-- Heading -->
-          <h4 class="d-flex justify-content-between align-items-center mb-3 pt-4 " style="margin-top: 10px;">
-            <span class="text-muted">Your cart</span>
-            <span class="badge badge-secondary badge-pill">{{order_list.items.all.count}}</span>
-          </h4>
+            <!-- Heading -->
+            <h4 class="d-flex justify-content-between align-items-center mb-3 pt-4 " style="margin-top: 10px;">
+              <span class="text-muted">Your cart</span>
+              <span class="badge badge-secondary badge-pill">{{order_list.items.all.count}}</span>
+            </h4>
 
-          <!-- Cart -->
-          
-          <ul class="list-group mb-3 z-depth-1 mt-3">
-            {%if order_list.items.all.count > 0 %}
+            <!-- Cart -->
+
+            <ul class="list-group mb-3 z-depth-1 mt-3">
+              {%if order_list.items.all.count > 0 %}
               {%for order in order_list.items.all %}
-              
+
               <li class="list-group-item d-flex justify-content-between lh-condensed">
-                
-                <div class="col">
-                  <h6 id="item_name" class="my-0">{{order.item.Name}}</h6>
-                  
-                </div>
-                <div class="col"> 
-                  <a id="{{order.item.id}}" onclick="Additem(id)" >
-                    <i class="fas fa-plus-circle"></i>
-                  </a>
-                  <small id="item_quantity" class="text-muted">{{order.quantity}}</small>
-                  <a id="{{order.item.id}}" onclick="remove_single_item(id)">
-                    <i class="fas fa-minus-circle"></i>
-                  </a>
-                </div>
-                <div class="col">
-                <span id="item_price" class="text-muted">${{order.item.Price}}</span>
-              </div>
-             
+                <table class="table">
+                  <tr>
+                    <th scope="col">
+                      <h6 id="item_name" class="my-0">{{order.item.Name}}</h6>
+
+                    </th>
+                    <th scope="col">
+                      <a id="{{order.item.id}}" onclick="Additem(id)">
+                        <i class="fas fa-plus-circle"></i>
+                      </a>
+
+                    </th>
+                    <th scope="col">
+                      <small id="item_quantity" class="text-muted">{{order.quantity}}</small>
+                    </th>
+                    <th scope="col">
+                      <a id="{{order.item.id}}" onclick="remove_single_item(id)">
+                        <i class="fas fa-minus-circle"></i>
+                      </a>
+                    </th>
+                    <th scope="col">
+                      <span id="item_price" class="text-muted">${{order.item.Price}}</span>
+                    </th>
+                    <th scope="col">
+                      <a id="{{order.item.id}}" onclick="remove_item(id)">
+                        <i class="far fa-trash-alt"></i>
+                      </a>
+                    </th>
+                  </tr>
+                </table>
               </li>
               {%endfor%}
 
-            
-            <li class="list-group-item d-flex justify-content-between bg-light">
-              <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
-              </div>
-              <span class="text-success">-$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong>${{order_list.total_price}}</strong>
-            </li>
+
+              <li class="list-group-item d-flex justify-content-between bg-light">
+                <div class="text-success">
+                  <h6 class="my-0">Promo code</h6>
+                  <small>EXAMPLECODE</small>
+                </div>
+                <span class="text-success">-$5</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Total (USD)</span>
+                <strong>${{order_list.total_price}}</strong>
+              </li>
               <a href="{%url 'chekout' %}" class="btn btn-success">Process checkout</a>
-          </ul>
-          {%else%}
-          <p>your cart is empety</p>
-          {%endif%}
-          {%endblock%}
-        </div>
+            </ul>
+            {%else%}
+            <p>your cart is empety</p>
+            {%endif%}
+            {%endblock%}
+          </div>
           <!-- Cart -->
 
         </div>
@@ -227,7 +238,7 @@
   $('.like').click(function () {
     var catid;
     catid = $(this).attr("data-id");
-    
+
     $.ajax(
       {
         type: "POST",
@@ -286,16 +297,15 @@
         }
 
       })
-      
 
-} // end function Additem(id)
 
-function remove_single_item(id)
-{
-  $.ajax(
+  } // end function Additem(id)
+
+  function remove_single_item(id) {
+    $.ajax(
       {
         type: "POST",
-        url: "/POS/remove_from_cart/" + id+"/5",
+        url: "/POS/remove_from_cart/" + id + "/5",
         data: {
           post_id: id,
           csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -312,10 +322,9 @@ function remove_single_item(id)
         }
 
       })
-}
-function removeitem(id)
-{
-  $.ajax(
+  }
+  function remove_item(id) {
+    $.ajax(
       {
         type: "POST",
         url: "/POS/remove_from_cart/" + id,
@@ -335,7 +344,7 @@ function removeitem(id)
         }
 
       })
-}
+  }
 </script>
 
 
