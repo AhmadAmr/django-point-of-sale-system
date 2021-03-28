@@ -28,14 +28,14 @@
             <!-- Links -->
             <ul class="navbar-nav mr-auto">
 
-              <li class="nav-item active">
-                <a class="nav-link" href="#">All
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}" value='None'>All
                   <span class="sr-only">(current)</span>
                 </a>
               </li>
               {%for cat in category_list %}
               <li class="nav-item">
-                <a class="nav-link" href="#">{{cat.Name}}</a>
+                <a class="nav-link" href="{% url 'home' %}?category={{cat.Name}}">{{cat.Name}}</a>
               </li>
               {%endfor%}
             </ul>

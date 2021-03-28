@@ -25,13 +25,18 @@ def is_valid_form(values):
     return valid
 
 class listItems(ListView):
-    model=Item
-    context_object_name = 'item_list'    
+    model=Item    
     template_name = 'home-page.html'
 
     def get_context_data(self, **kwargs):
         context = super(listItems, self).get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
+        category = self.request.GET.get('category')
+        if category == None:
+            context['item_list'] = Item.objects.all()
+        else:
+            context['item_list'] = Item.objects.filter(Category__Name=category)
+            print('asdasd')
         try:
             context['order_list']= order=Order.objects.get(user=self.request.user,is_ordered=False)
         except:
