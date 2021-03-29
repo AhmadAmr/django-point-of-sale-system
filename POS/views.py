@@ -36,7 +36,7 @@ class listItems(ListView):
             context['item_list'] = Item.objects.all()
         else:
             context['item_list'] = Item.objects.filter(Category__Name=category)
-            print('asdasd')
+            
         try:
             context['order_list']= order=Order.objects.get(user=self.request.user,is_ordered=False)
         except:

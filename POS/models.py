@@ -21,6 +21,7 @@ def get_user_name():
 def image_upload(instance,filename):
     name,ext=filename.split(".")
     return "items/%s.%s"%(instance.id,ext)
+
 class Item(models.Model):
     Author=models.ForeignKey(User,null=True,on_delete=models.CASCADE,editable=False)
     Name=models.CharField(max_length=20)
@@ -31,7 +32,17 @@ class Item(models.Model):
     def __str__(self):
         return self.Name
     
-    
+class Itemlocation(models.Model):
+    item=models.ForeignKey(Item,on_delete=models.CASCADE)
+    quantity=models.IntegerField(default=1)
+    def __str__(self):
+        return f"{self.quantity} of {self.item.Name}"
+
+class location(models.Model):
+    location_name=models.CharField(max_length=50)
+    items=models.ManyToManyField(Itemlocation, blank=True)
+    def __str__(self):
+        return self.location_name
    
 class ItemOrder(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)

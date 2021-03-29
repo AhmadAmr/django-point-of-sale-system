@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category,Item,Customer,ItemOrder,Order,Address
+from .models import Category,Item,Customer,ItemOrder,Order,Address,Itemlocation,location
 
 
 
@@ -20,6 +20,8 @@ admin.site.register(Item,ItemAdmin)
 admin.site.register(ItemOrder)
 admin.site.register(Order)
 admin.site.register(Address)
+admin.site.register(Itemlocation)
+admin.site.register(location)
 
 
     
