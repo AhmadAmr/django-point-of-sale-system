@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+
+
 {% block content %}
 
 
@@ -43,7 +45,7 @@
 
             <form class="form-inline">
               <div class="md-form my-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <input id = "search_here" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
               </div>
             </form>
           </div>
@@ -53,13 +55,13 @@
         <!--/.Navbar-->
 
         <!--Section: Products v.3-->
-        <section class="text-center mb-4">
+        <section class="text-center mb-4" id="box">
 
           <!--Grid row-->
           <div class="row wow fadeIn">
             {%for item in item_list%}
             <!--Grid column-->
-            <div class="col-lg-4 col-md-6 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4" >
 
               <!--Card-->
               <div class="card">
@@ -253,9 +255,73 @@
 
 </main>
 <!--Main layout-->
+{% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <script>
+  
+//Search
+const data = '{{ qs_json }}'
+
+const rdata = JSON.parse(data.replace(/&quot;/g,'"'))
+console.log(rdata)
+const input = document.getElementById('search_here')
+console.log(input)
+let filteredArr = []
+input.addEventListener('keyup', (e) =>{
+  box.innerHTML = ""
+  filteredArr = rdata.filter(Item=> Item['Name'].includes(e.target.value))
+  console.log(filteredArr)
+  if (filteredArr.length > 0){
+    filteredArr.map(Item=>{
+      
+      box.innerHTML += `<div class="card">
+
+<!--Card image-->
+<div class="view overlay">
+  <img src="${Item['Image.url']}" class="card-img-top" alt="" style="height: 200px;">
+  <a>
+    <div class="mask rgba-white-slight"></div>
+  </a>
+</div>
+<!--Card image-->
+
+<!--Card content-->
+<div class="card-body text-center">
+  <!--Category & Title-->
+  {%csrf_token%}
+  <input type="hidden" class="Like" id="itemId" name="itemId" value="${Item['id']}">
+  <a href="" class="grey-text">
+    <h5>${Item['Category']}</h5>
+  </a>
+  <h5>
+    <strong>
+      <p id='itemname' class="dark-grey-text">${Item['Name']}
+
+      </p>
+    </strong>
+  </h5>
+
+  <h4 class="font-weight-bold blue-text">
+    <strong>${Item['Price']}$</strong>
+  </h4>
+
+  <input type="submit" class="like btn btn-primary"  data-id="${Item['id']}" value="ADD">
+
+</div>
+<!--Card content-->
+
+</div>
+<!--Card-->
+
+</div>`
+    })
+  }
+})
+
+
+
+
 
 
 
@@ -370,6 +436,6 @@
       })
   }
 </script>
-
+{% endblock scripts %}
 
 {% endblock %}
