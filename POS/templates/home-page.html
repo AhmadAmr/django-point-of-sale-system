@@ -55,10 +55,11 @@
         <!--/.Navbar-->
 
         <!--Section: Products v.3-->
-        <section class="text-center mb-4" id="box">
+        <section class="text-center mb-4" >
 
           <!--Grid row-->
-          <div class="row wow fadeIn">
+          <div class="row wow fadeIn" id="box">
+          
             {%for item in item_list%}
             <!--Grid column-->
             <div class="col-lg-4 col-md-6 mb-4" >
@@ -95,7 +96,7 @@
                     <strong>{{item.Price}}$</strong>
                   </h4>
 
-                  <input type="submit" class="like btn btn-primary" data-id="{{ item.id }}" value="ADD">
+                  <input type="submit" class=" btn btn-primary" data-id="{{ item.id }}"  onclick="Additem({{ item.id }})" value="ADD">
 
                 </div>
                 <!--Card content-->
@@ -236,13 +237,6 @@
                   </div>
               </div>
           </div>
-
-
-
-
-
-
-
             {%endif%}
             {%endblock%}
           </div>
@@ -275,11 +269,14 @@ input.addEventListener('keyup', (e) =>{
   if (filteredArr.length > 0){
     filteredArr.map(Item=>{
       
-      box.innerHTML += `<div class="card">
+      box.innerHTML +=
+       `
+       <div class="col-lg-4 col-md-6 mb-4" >
+       <div class="card">
 
 <!--Card image-->
 <div class="view overlay">
-  <img src="${Item['Image.url']}" class="card-img-top" alt="" style="height: 200px;">
+  <img src="/media/${Item['Image']}" class="card-img-top" alt="" style="height: 200px;">
   <a>
     <div class="mask rgba-white-slight"></div>
   </a>
@@ -290,9 +287,9 @@ input.addEventListener('keyup', (e) =>{
 <div class="card-body text-center">
   <!--Category & Title-->
   {%csrf_token%}
-  <input type="hidden" class="Like" id="itemId" name="itemId" value="${Item['id']}">
+  <input type="hidden" class="like" id="itemId" name="itemId" value="${Item['id']}">
   <a href="" class="grey-text">
-    <h5>${Item['Category']}</h5>
+    <h5>${Item['Category_id']}</h5>
   </a>
   <h5>
     <strong>
@@ -306,14 +303,15 @@ input.addEventListener('keyup', (e) =>{
     <strong>${Item['Price']}$</strong>
   </h4>
 
-  <input type="submit" class="like btn btn-primary"  data-id="${Item['id']}" value="ADD">
+  <input type="submit" class="btn btn-primary" onclick="Additem(${Item['id']})"  data-id="${Item['id']}" value="ADD">
 
 </div>
 <!--Card content-->
 
 </div>
 <!--Card-->
-
+</div>
+</div>
 </div>`
     })
   }
@@ -322,34 +320,6 @@ input.addEventListener('keyup', (e) =>{
 
 
 
-
-
-
-  $('.like').click(function () {
-    var catid;
-    catid = $(this).attr("data-id");
-
-    $.ajax(
-      {
-        type: "POST",
-        url: "/POS/add_to_cart/" + catid,
-        data: {
-          post_id: catid,
-          csrfmiddlewaretoken: '{{ csrf_token }}'
-        },
-        success: function (data) {
-          if (data.status == 'fail') {
-            window.location.href = '/accounts/login';
-          }
-          if (data.status == 'success') {
-            for (var i = 0; i < 1000; i++)
-              console.log('ddd');
-            Listitem();
-          }
-        }
-
-      })
-  })
 
   function Listitem() {
     var delay = 100;
