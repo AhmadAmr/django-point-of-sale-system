@@ -289,7 +289,7 @@ input.addEventListener('keyup', (e) =>{
   {%csrf_token%}
   <input type="hidden" class="like" id="itemId" name="itemId" value="${Item['id']}">
   <a href="" class="grey-text">
-    <h5>${Item['Category_id']}</h5>
+    <h5>${Item['Category__Name']}</h5>
   </a>
   <h5>
     <strong>
@@ -316,10 +316,6 @@ input.addEventListener('keyup', (e) =>{
     })
   }
 })
-
-
-
-
 
   function Listitem() {
     var delay = 100;

@@ -31,7 +31,7 @@ class listItems(ListView):
     def get_context_data(self, **kwargs):
         context = super(listItems, self).get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
-        context["qs_json"] = json.dumps(list(Item.objects.all().values()))
+        context["qs_json"] = json.dumps(list(Item.objects.all().values('Category__Name','Name','Price','Image')))
         category = self.request.GET.get('category')
         if category == None:
             context['item_list'] = Item.objects.all()
