@@ -31,7 +31,7 @@ class listItems(ListView):
     def get_context_data(self, **kwargs):
         context = super(listItems, self).get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
-        context["qs_json"] = json.dumps(list(Item.objects.all().values('Category__Name','Name','Price','Image')))
+        context["qs_json"] = json.dumps(list(Item.objects.all().values('id','Category__Name','Name','Price','Image')))
         category = self.request.GET.get('category')
         if category == None:
             context['item_list'] = Item.objects.all()
@@ -148,7 +148,7 @@ class checkout(LoginRequiredMixin,ListView):
                 area_name = form.cleaned_data.get('area_name')
                 street_name = form.cleaned_data.get('street_name')
                 apartment_number=form.cleaned_data.get('apartment_number')
-                country = form.cleaned_data.get('country')
+                
                 default = form.cleaned_data.get('default')
                 if is_valid_form([phone_no, area_name, street_name,country,default]):
                     shipping_address = Address(

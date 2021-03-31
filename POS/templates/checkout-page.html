@@ -26,8 +26,9 @@
           <div class="card-body">
 
             <!-----------------------------Card order summary----------------------------->
+          
+            <div class="card text-white bg-primary" style="color: black ;">
 
-            <div class="card text-white bg-primary">
               <div class="card-header ">
                 Order Summary
               </div>
@@ -40,6 +41,7 @@
                       <th scope="col">Qty</th>
                       <th scope="col">Price</th>
                       <th scope="col">Total</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -49,7 +51,12 @@
                       <td>{{item.quantity}}</td>
                       <td>{{item.item.Price}}</td>
                       <td> {{item.total_item_price}}</td>
+                      
+                      
+                      
+                      
                     </tr>
+                    
                     {%endfor%}
                   </tbody>
                 </table>
@@ -57,30 +64,31 @@
             </div>
             <br>
             <!-----------------------------Card address------------------------------>
-            <div class="card text-white bg-warning">
+            <div class="card text-white bg-primary">
               <div class="card-header">
-                <span>Address summary</span>
+                <span>Customer info</span>
                 <a  class="badge badge-pill badge-success" data-toggle="modal" data-target="#exampleModalCenter" style="float: right;">
                   ADD
                 </a>
               </div>
-              <div class="card-body">
-                <h5 class="card-title">Address: {{address.area_name}} - {{address.street_name}} </h5>
-                <h1 class="card-text">Apartment Number:{{address.apartment_number}}</h1>
-                <h1 class="card-text">Phone NO :{{address.phone_no}}</h1>
+              <div class="card-header">
+                <h6 >Phone NO :{{address.phone_no}}</h1>
+                <h6 >Address: {{address.area_name}} - {{address.street_name}} </h5>
+                <h6 >Apartment Number:{{address.apartment_number}}</h1>
+                
                 
               </div>
             </div>
             <br>
             <!-----------------------------Card paymet----------------------------->
-            <div class="card text-white bg-secondary">
+            <div class="card text-white bg-primary">
               <div class="card-header">
                 <span>Payment summary</span>
                 
               </div>
               <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <h5 class="card-title">Checkout : {{ order_list.total_price }}</h5>
+                <p class="card-text"></p>
                 
               </div>
             </div> 
@@ -137,6 +145,4 @@
     </div>
   </div>
 </div>
-<!--Main layout-->
 {%endblock%}
-<!--Footer-->

@@ -6,7 +6,7 @@ from .models import Address
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields=['phone_no','area_name','street_name','apartment_number','country','default']
+        fields=['phone_no','area_name','street_name','apartment_number','default']
         widgets = {
             'area_name': TextInput(attrs={'placeholder': 'area_name'}),
             'phone_no' : TextInput(attrs={'placeholder': '01234567899'}),
