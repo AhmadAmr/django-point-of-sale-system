@@ -90,7 +90,6 @@ class Address(models.Model):
     area_name=models.CharField(max_length=50)
     street_name = models.CharField(max_length=100)
     apartment_number = models.CharField(max_length=100)
-    country = CountryField(multiple=False)
     additional_directions=models.TextField(null=True,blank=True)
     default = models.BooleanField(default=False)
 

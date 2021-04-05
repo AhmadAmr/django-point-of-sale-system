@@ -126,6 +126,7 @@ class checkout(LoginRequiredMixin,ListView):
             form = AddressForm()
             order=Order.objects.get(user=self.request.user,is_ordered=False)
             address=Address.objects.filter(user=self.request.user,default=True)
+            print(order.items.all())
             context = { 'form': form,'order_list':order}
             if address.exists():
                 context.update({'address':address[0]})
@@ -144,20 +145,17 @@ class checkout(LoginRequiredMixin,ListView):
             form = AddressForm(self.request.POST or None)
             if form.is_valid():
                 phone_no  = form.cleaned_data.get('phone_no')
-                print(phone_no)
                 area_name = form.cleaned_data.get('area_name')
                 street_name = form.cleaned_data.get('street_name')
                 apartment_number=form.cleaned_data.get('apartment_number')
-                
                 default = form.cleaned_data.get('default')
-                if is_valid_form([phone_no, area_name, street_name,country,default]):
+                if is_valid_form([phone_no, area_name, street_name,default]):
                     shipping_address = Address(
                         user=self.request.user,
                         phone_no=phone_no,
                         street_name=street_name,
                         area_name=area_name,
                         apartment_number=apartment_number,
-                        country=country,
                         default=default,
                         )
                     shipping_address.save()
@@ -166,4 +164,27 @@ class checkout(LoginRequiredMixin,ListView):
         
             else:
              return redirect('/POS')
+
+def place_order(request):
+    try:
+        order=Order.objects.get(user=request.user,is_ordered=False)
+        address=Address.objects.filter(user=request.user,default=True)
+        if address.exists():
+            order_items = order.items.all()
+            order_items.update(is_ordered=True)
+            for item in order_items:
+                item.save()
+            print("done")
+            order.is_ordered = True
+            order.save()
+            return redirect("/POS")
+        else:
+            return  redirect("/")
+    except ObjectDoesNotExist:
+        return  redirect("/POS")
+
+
+
+def report_view(request):
+    return render(request,'reports.html')
     
