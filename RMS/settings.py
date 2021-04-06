@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'crispy_forms',
     'django_countries',
+    
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
@@ -71,6 +72,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.static',
+                'django.template.context_processors.media',
+
             ],
         },
     },
@@ -156,5 +160,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'kok188411@gmail.com'
-EMAIL_HOST_PASSWORD = '78912356*'
+EMAIL_HOST_PASSWORD = 'ekcyyhxyclyltrcq'
 
