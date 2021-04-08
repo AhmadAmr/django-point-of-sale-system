@@ -11,4 +11,16 @@ class AddressForm(forms.ModelForm):
             'area_name': TextInput(attrs={'placeholder': 'area_name'}),
             'phone_no' : TextInput(attrs={'placeholder': '01234567899'}),
         }
-        
+class SalesFiltersForm(forms.Form):
+    date_from = forms.DateTimeField()
+    date_to = forms.DateTimeField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['date_from'].widget.attrs.update({'class': 'form-control'})
+        self.fields['date_from'].widget.attrs.update({'placeholder': 'Date from'})
+        self.fields['date_to'].widget.attrs.update({'class': 'form-control'})
+        self.fields['date_to'].widget.attrs.update({'placeholder': 'Date to'})
+        self.fields['date_from'].widget.attrs.update({'id': 'date_from'})
+        self.fields['date_to'].widget.attrs.update({'id': 'date_to'})
+

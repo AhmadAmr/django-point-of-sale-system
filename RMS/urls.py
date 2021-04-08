@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('POS/',include('POS.urls')),
     path('accounts/', include('allauth.urls')),
+   
   
 ]
 #urlpatterns= urlpatterns+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

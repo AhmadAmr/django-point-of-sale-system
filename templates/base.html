@@ -10,12 +10,15 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Bootstrap core CSS -->
-  <link href="{%static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'bootstrap-4/css/bootstrap.min.css' %}">
   <!-- Material Design Bootstrap -->
   <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'jquery-ui-1.12/jquery-ui.min.css' %}">
+  <link rel="stylesheet" href="{% static 'datatables/datatables.min.css' %}">
   <style type="text/css">
+    
     html,
     body,
     header,
@@ -51,8 +54,10 @@ div.sticky {
   
   font-size: 20px;
 }
-
+  
   </style>
+
+ 
 </head>
 
 <body>
@@ -117,10 +122,10 @@ div.sticky {
   <!-- Navbar -->
   
   <br>
-
+  <div id="content" class="container-fluid">
   {% block content %}
   {% endblock %}
-
+  </div>
   <footer class="page-footer text-center font-small mt-4 wow fadeIn">
 
     <!--Call to action-->
@@ -155,18 +160,46 @@ div.sticky {
   <!-- Bootstrap tooltips -->
   <script type="text/javascript" src="{% static 'js/popper.min.js'%}"></script>
   <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="{% static 'js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'bootstrap-4/js/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{% static 'js/mdb.min.js'%}"></script>
   <!-- Initializations -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script src="{% static 'jquery-ui-1.12/external/jquery/jquery.js' %}"></script>
+  <script src="{% static 'jquery-ui-1.12/jquery-ui.min.js' %}"></script>
+  
+  <script defer src="{% static 'datatables/datatables.min.js' %}"></script>
+  <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myTable').DataTable( {
+                dom: 'Bfrtip',
+                "pageLength": 50,
+                buttons: [
+                    'copy', 'excel', {
+                        extend: 'pdfHtml5',
+                        customize: function ( doc ) {
+                            doc.content.splice( 1, 0, {} );
+                        }
+                    }, 'print'
+                ]
+            } );
 
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+
+            $('#id_old_password').attr('class', 'form-control');
+            $('#id_new_password1').attr('class', 'form-control');
+            $('#id_new_password2').attr('class', 'form-control');
+
+        });
+    </script>
   <script type="text/javascript">
   
     // Animations initialization
     new WOW().init();
 
   </script>
+  {% block page_js %}{% endblock page_js %} 
 </body>
 
 </html>

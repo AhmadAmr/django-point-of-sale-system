@@ -1,11 +1,12 @@
 
 from django.shortcuts import render,get_object_or_404,redirect
 from . models import  Item ,Category, Order,ItemOrder,Address
-from django.views.generic import ListView ,DetailView
+from django.views.generic import ListView ,DetailView,TemplateView, FormView
 from django.utils import timezone
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Sum
 import json
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -13,7 +14,7 @@ from django.core import serializers
 from django.template import loader
 from render_block import render_block_to_string
 from django.template import  Context
-from .forms import AddressForm
+from .forms import AddressForm, SalesFiltersForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
@@ -185,6 +186,32 @@ def place_order(request):
 
 
 
-def report_view(request):
-    return render(request,'reports.html')
+class ReportsView(FormView):
+    template_name = 'detail-page.html'
+    form_class = SalesFiltersForm
+    
+    def post(self, request, *args, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        formdate = request.POST.get('fromdate')
+        todate=request.POST.get('todate')
+        context['sale_list'] = Order.objects.filter(
+                order_date__gte=formdate,
+                order_date__lte=todate
+            )
+        context['sum'] = context['sale_list'].aggregate(Sum('id'))
+
+        return render(self.request, 'detail-page.html', context=context)
+
+    def get(self, request, *args, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context['sale_list'] = Order.objects.all()
+
+        context['sum'] = context['sale_list'].aggregate(Sum('id'))
+
+        return render(self.request, 'detail-page.html', context=context)
+
     
