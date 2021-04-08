@@ -10,7 +10,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="{% static 'bootstrap-4/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
   <!-- Material Design Bootstrap -->
   <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
@@ -67,7 +67,7 @@ div.sticky {
     <div class="container" >
 
       <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="#" target="_blank">
+      <a class="navbar-brand waves-effect" href="{%url 'home'%}" target="_blank">
         <strong class="blue-text">POS</strong>
       </a>
 
@@ -183,13 +183,7 @@ div.sticky {
                 ]
             } );
 
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-
-            $('#id_old_password').attr('class', 'form-control');
-            $('#id_new_password1').attr('class', 'form-control');
-            $('#id_new_password2').attr('class', 'form-control');
+            
 
         });
     </script>
