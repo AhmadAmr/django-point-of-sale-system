@@ -186,40 +186,38 @@ def place_order(request):
 
 
 
-class ReportsView(FormView):
+class ReportsView(ListView):
     template_name = 'reports-page.html'
-    form_class = SalesFiltersForm
+    model=Order
     def get_total_sum(self,obj):
         total=0
         for sum in obj:
             total+=sum.total_price()
         return total
     
-    def post(self, request, *args, **kwargs):
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReportsView, self).get_context_data(**kwargs)
+        formdate = self.request.GET.get('fromdate')
+        todate=self.request.GET.get('todate')
+        if formdate == None  or  formdate=="":
+            context['sale_list'] = Order.objects.filter(is_ordered=True)
+            context['sum'] = self.get_total_sum(context['sale_list'])
+            
+        else:
+            try:
+                
+                context['sale_list'] = Order.objects.filter(
+                        order_date__gte=formdate,
+                        order_date__lte=todate,
+                        is_ordered=True
+                    )
+                context['sum'] = self.get_total_sum(context['sale_list'])
+            except :
+                context
+        return context
 
-        context = super().get_context_data(**kwargs)
 
-        formdate = request.POST.get('fromdate')
-        todate=request.POST.get('todate')
-        try:
-            context['sale_list'] = Order.objects.filter(
-                    order_date__gte=formdate,
-                    order_date__lte=todate,
-                    is_ordered=True
-                )
-        except:
-            return redirect('/POS/report')
 
-        return render(self.request, self.template_name, context=context)
-
-    def get(self, request, *args, **kwargs):
-
-        context = super().get_context_data(**kwargs)
-
-        context['sale_list'] = Order.objects.filter(is_ordered=True)
-        
-        context['sum'] = self.get_total_sum(context['sale_list'])
-
-        return render(self.request, self.template_name, context=context)
 
     
