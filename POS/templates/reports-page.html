@@ -43,9 +43,9 @@
         <th>Date</th>
         <th>Order BY</th>
         <th>Total</th>
-        <th>Qty</th>
-        <th>Price</th>
-        <th>Total</th>
+        <th>Items</th>
+        
+        
       </thead>
       <tbody>
         {% for sale in sale_list %}
@@ -53,9 +53,15 @@
           <td>{{ sale.order_date }}</td>
           <td>{{ sale.user }}</td>
           <td>{{ sale.total_price}}</td>
-          <td>{{ sale.quantity }}</td>
-          <td>{{ sale.unit_price }}</td>
-          <td>{{ sale.total }}</td>
+          <td> 
+           {% for item in sale.items.all %}
+              <ul>
+               <li class="row"><span class="col">{{item.item.Name}}</span>  <span class="col">{{item.quantity}}</span></li>
+              </ul>
+           {% endfor %}
+          </td>
+          
+         
         </tr>
         {% endfor %}
       </tbody>
