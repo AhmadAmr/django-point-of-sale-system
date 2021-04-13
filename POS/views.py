@@ -102,14 +102,6 @@ def remove_from_cart(request,pk,single_item=-1):
         return HttpResponse('{"status":"fail", "msg":"404"}', content_type='application/json')
 
 
-        
-
-
-
-
-
-
-
 
 def cart_list(request):
     order=Order.objects.get(user=request.user,is_ordered=False)
@@ -206,7 +198,6 @@ class ReportsView(ListView):
             
         else:
             try:
-                
                 context['sale_list'] = Order.objects.filter(
                         order_date__gte=formdate,
                         order_date__lte=todate,
